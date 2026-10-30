@@ -1,0 +1,1 @@
+Copy your existing schedule_data.csv into this folder and name it exactly schedule_data.csv. The CSV must have 3 columns: size,schedule,thickness (with a header row).\n
