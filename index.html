@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -30,16 +31,33 @@
 
     <section class="result-card" aria-live="polite">
       <div class="result-heading">CALCULATED RESULT</div>
+
       <div class="result-row">
         <span>Schedule (SCH)</span>
         <strong id="schedule">—</strong>
       </div>
+
       <div class="rule"></div>
+
       <div class="result-row">
         <span>Standard Thickness</span>
         <strong id="thickness">—</strong>
       </div>
+
       <p id="message" class="message">Loading schedule data…</p>
+    </section>
+
+    <section class="result-card retiring-card" aria-live="polite">
+      <div class="result-heading">NOZZLE RETIRING THICKNESS</div>
+
+      <div class="result-row">
+        <span>Retiring Thickness</span>
+        <strong id="retiring-thickness">—</strong>
+      </div>
+
+      <div id="retiring-status" class="retiring-status" role="status">
+        Enter nozzle diameter and average thickness.
+      </div>
     </section>
 
     <footer>
@@ -47,6 +65,7 @@
       <div class="credit">Crafted by Manish Prakash, SM(M&amp;I), NR</div>
     </footer>
   </main>
+
   <script src="./app.js" defer></script>
 </body>
 </html>
