@@ -1,4 +1,3 @@
-
 * { box-sizing: border-box; }
 
 :root {
@@ -6,12 +5,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: #f3f6fa;
-  color: #182433;
-}
+body { margin: 0; min-height: 100vh; background: #f3f6fa; color: #182433; }
 
 .app-shell {
   width: min(100% - 32px, 480px);
@@ -22,182 +16,62 @@ body {
   flex-direction: column;
 }
 
-.app-header {
-  text-align: center;
-  padding: 20px 8px 30px;
-}
+.app-header { text-align: center; padding: 20px 8px 24px; }
+.eyebrow { color: #6b7785; font-size: 12px; letter-spacing: 1.5px; font-weight: 700; }
+h1 { margin: 9px 0 5px; color: #173b63; font-size: clamp(23px, 6vw, 29px); letter-spacing: .5px; }
+.subtitle { margin: 0; color: #778391; font-size: 13px; }
 
-.eyebrow {
-  color: #6b7785;
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  font-weight: 700;
+.tab-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.tab-button {
+  min-height: 46px; border: 1px solid #c7d2de; border-radius: 11px;
+  padding: 8px 10px; background: #fff; color: #31506f;
+  font-size: 13px; font-weight: 750; line-height: 1.25;
 }
-
-h1 {
-  margin: 9px 0 5px;
-  color: #173b63;
-  font-size: clamp(23px, 6vw, 29px);
-  letter-spacing: .5px;
-}
-
-.subtitle {
-  margin: 0;
-  color: #778391;
-  font-size: 13px;
-}
+.tab-button.active { background: #173b63; border-color: #173b63; color: #fff; }
+.tab-panel[hidden] { display: none; }
 
 .input-panel, .result-card {
-  background: white;
-  border-radius: 18px;
-  padding: 22px;
+  background: white; border-radius: 18px; padding: 22px;
   box-shadow: 0 5px 22px rgba(22, 48, 76, .07);
 }
-
-label {
-  display: block;
-  color: #344354;
-  font-size: 14px;
-  font-weight: 650;
-  margin: 0 0 8px;
+label { display: block; color: #344354; font-size: 14px; font-weight: 650; margin: 0 0 8px; }
+input, select {
+  display: block; width: 100%; height: 52px; border: 1px solid #ccd5df;
+  border-radius: 10px; padding: 0 14px; font-size: 16px; color: #172b40;
+  background: #fff; outline: none; margin-bottom: 19px;
 }
-
-input {
-  display: block;
-  width: 100%;
-  height: 52px;
-  border: 1px solid #ccd5df;
-  border-radius: 10px;
-  padding: 0 14px;
-  font-size: 17px;
-  color: #172b40;
-  background: #fff;
-  outline: none;
-  margin-bottom: 19px;
-}
-
-input:focus {
-  border-color: #285c91;
-  box-shadow: 0 0 0 3px rgba(40, 92, 145, .12);
-}
-
+input:focus, select:focus { border-color: #285c91; box-shadow: 0 0 0 3px rgba(40, 92, 145, .12); }
 .reset-button {
-  width: 100%;
-  min-height: 46px;
-  border: 1px solid #b9c7d5;
-  border-radius: 10px;
-  background: #fff;
-  color: #173b63;
-  font-weight: 750;
-  letter-spacing: .8px;
-  font-size: 13px;
-  margin-top: 2px;
+  width: 100%; min-height: 46px; border: 1px solid #b9c7d5; border-radius: 10px;
+  background: #fff; color: #173b63; font-weight: 750; letter-spacing: .8px;
+  font-size: 13px; margin-top: 2px;
 }
+.result-card { margin-top: 20px; background: #eaf2fa; box-shadow: none; }
+.result-heading { color: #173b63; font-size: 12px; font-weight: 800; letter-spacing: .8px; margin-bottom: 19px; }
+.result-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 3px 0; }
+.result-row span { font-size: 14px; color: #344354; }
+.result-row strong { color: #173b63; font-size: 20px; text-align: right; overflow-wrap: anywhere; }
+#thickness, #next-thickness, #retiring-thickness { font-size: 20px; }
+.rule { height: 1px; background: #cbd8e5; margin: 14px 0; }
+.message { margin: 17px 0 0; color: #697887; font-size: 12px; line-height: 1.45; }
 
-.result-card {
-  margin-top: 20px;
-  background: #eaf2fa;
-  box-shadow: none;
+.retiring-card { background: #f0f3f7; }
+.retiring-status, .assessment-status {
+  margin-top: 14px; padding: 13px 12px; border-radius: 10px;
+  background: #e8edf2; color: #526273; font-size: 14px; font-weight: 750;
+  line-height: 1.45; text-align: center;
 }
+.retiring-status.satisfactory, .assessment-status.satisfactory { background: #e1f3e5; color: #216b35; }
+.retiring-status.replacement, .assessment-status.replacement { background: #fbe4e4; color: #a52b2b; }
 
-.result-heading {
-  color: #173b63;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .8px;
-  margin-bottom: 19px;
-}
-
-.result-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.result-row span {
-  font-size: 14px;
-  color: #344354;
-}
-
-.result-row strong {
-  color: #173b63;
-  font-size: 24px;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
-
-#thickness {
-  font-size: 21px;
-}
-
-.rule {
-  height: 1px;
-  background: #cbd8e5;
-  margin: 16px 0;
-}
-
-.message {
-  margin: 17px 0 0;
-  color: #697887;
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-/* Retiring thickness assessment */
-
-.retiring-card {
-  background: #f0f3f7;
-}
-
-#retiring-thickness {
-  font-size: 21px;
-}
-
-.retiring-status {
-  margin-top: 18px;
-  padding: 13px 12px;
-  border-radius: 10px;
-  background: #e8edf2;
-  color: #526273;
-  font-size: 14px;
-  font-weight: 750;
-  line-height: 1.45;
-  text-align: center;
-}
-
-.retiring-status.satisfactory {
-  background: #e1f3e5;
-  color: #216b35;
-}
-
-.retiring-status.replacement {
-  background: #fbe4e4;
-  color: #a52b2b;
-}
-
-footer {
-  margin-top: auto;
-  padding: 25px 5px 5px;
-  text-align: center;
-  color: #8793a0;
-  font-size: 11px;
-  line-height: 1.7;
-}
-
-.credit {
-  margin-top: 7px;
-  color: #637181;
-  font-size: 12px;
-  font-weight: 600;
-}
+.manhole-result { background: #f0f3f7; }
+.assessment-title { color: #173b63; font-size: 13px; font-weight: 800; letter-spacing: .5px; margin-bottom: 10px; }
+.assessment-block .result-row strong { font-size: 18px; }
+footer { margin-top: auto; padding: 25px 5px 5px; text-align: center; color: #8793a0; font-size: 11px; line-height: 1.7; }
+.credit { margin-top: 7px; color: #637181; font-size: 12px; font-weight: 600; }
 
 @media (max-width: 360px) {
-  .input-panel, .result-card {
-    padding: 18px;
-  }
-
-  .result-row span {
-    font-size: 13px;
-  }
+  .input-panel, .result-card { padding: 18px; }
+  .result-row span { font-size: 13px; }
+  .tab-button { font-size: 12px; }
 }
