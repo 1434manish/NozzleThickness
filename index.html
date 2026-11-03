@@ -1,70 +1,194 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#142d46" />
-  <meta name="description" content="Tank shell design and retiring thickness calculator." />
-  <title>Tank Shell Thickness Calculator</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173b63">
+  <meta name="description" content="Nozzle, manhole and tank shell design and thickness assessment calculator.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Shell Appurtenances and Courses Thickness</title>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand-mark">TS</div>
-    <div>
-      <h1>Tank Shell Thickness Calculator</h1>
-      <p>Design &amp; retiring thickness assessment</p>
-    </div>
-    <span class="header-tag">ENGINEERING TOOL</span>
-  </header>
+  <main class="app-shell">
+    <header class="app-header">
+      <h1>SHELL APPURTENANCES AND COURSES THICKNESS</h1>
+      <p class="subtitle">Nozzle, Manhole, Shell courses design and retiring thickness calculator</p>
+    </header>
 
-  <main class="page-wrap">
-    <section class="intro-row">
-      <div>
-        <p class="eyebrow">TANK ASSESSMENT</p>
-        <h2>Tank particulars</h2>
-        <p class="muted">Enter the tank details below. Results update automatically when an input changes.</p>
-      </div>
-      <button class="btn btn-light" id="resetBtn" type="button">Reset inputs</button>
+    <nav class="tab-bar" aria-label="Calculator sections">
+      <button class="tab-button active" id="nozzle-tab" type="button" role="tab" aria-selected="true" aria-controls="nozzle-panel">Nozzle Thickness</button>
+      <button class="tab-button" id="manhole-tab" type="button" role="tab" aria-selected="false" aria-controls="manhole-panel">Manhole CP and BF</button>
+      <button class="tab-button" id="shell-tab" type="button" role="tab" aria-selected="false" aria-controls="shell-panel">Manhole Neck &amp; Shell Design</button>
+    </nav>
+
+    <section id="nozzle-panel" class="tab-panel active" role="tabpanel" aria-labelledby="nozzle-tab">
+      <section class="input-panel" aria-label="Nozzle calculator inputs">
+        <label for="diameter">Nozzle Diameter (mm)</label>
+        <input id="diameter" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 80">
+
+        <label for="average">Average Thickness (mm)</label>
+        <input id="average" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 5.10">
+
+        <button id="reset" class="reset-button" type="button">RESET</button>
+      </section>
+
+      <section class="result-card" aria-live="polite">
+        <div class="result-heading">CALCULATED RESULT as per ASME B36.10M-2018</div>
+        <div class="result-row">
+          <span>Schedule (SCH)</span>
+          <strong id="schedule">—</strong>
+        </div>
+        <div class="rule"></div>
+        <div class="result-row">
+          <span>Standard Thickness</span>
+          <strong id="thickness">—</strong>
+        </div>
+        <div class="rule"></div>
+        <div class="result-row">
+          <span>Next Closer Schedule (SCH)</span>
+          <strong id="next-schedule">—</strong>
+        </div>
+        <div class="rule"></div>
+        <div class="result-row">
+          <span>Next Closer Standard Thickness</span>
+          <strong id="next-thickness">—</strong>
+        </div>
+        <p id="message" class="message">Loading schedule data…</p>
+      </section>
+
+      <section class="result-card retiring-card" aria-live="polite">
+        <div class="result-heading">NOZZLE RETIRING THICKNESS as per M&amp;I circular HO/M&amp;I/33/40</div>
+        <div class="result-row">
+          <span>Retiring Thickness</span>
+          <strong id="retiring-thickness">—</strong>
+        </div>
+        <div id="retiring-status" class="retiring-status" role="status">
+          Enter nozzle diameter and average thickness.
+        </div>
+      </section>
     </section>
 
-    <section class="panel">
-      <div class="section-heading"><span class="section-number">01</span><div><h3>General details</h3><p>Basic tank geometry and design parameters</p></div></div>
-      <div class="input-grid">
-        <label class="field"><span>Tank Diameter, D <small>(m)</small></span><input id="diameter" type="number" min="0.01" step="0.01" value="32" /></label>
-        <label class="field"><span>Tank Height, H <small>(m)</small></span><input id="tankHeight" type="number" min="0.01" step="0.01" value="13" /></label>
-        <label class="field"><span>Radiography</span><select id="radiography"><option value="0.7">No Radiography</option><option value="0.85" selected>Spot Radiography</option><option value="1">Full Radiography</option></select></label>
-        <label class="field"><span>Joint Efficiency Factor, E</span><input id="jointEfficiency" type="number" value="0.85" readonly /></label>
-        <label class="field"><span>Corrosion Allowance <small>(mm)</small></span><input id="corrosionAllowance" type="number" min="0" step="0.1" value="1.5" /></label>
-        <label class="field"><span>Product Specific Gravity, G</span><input id="specificGravity" type="number" min="0.01" step="0.01" value="0.85" /></label>
-      </div>
-      <p class="field-note"><strong>Joint efficiency:</strong> automatically assigned from the selected radiography category, matching the attached workbook (0.70 / 0.85 / 1.00).</p>
+    <section id="manhole-panel" class="tab-panel" role="tabpanel" aria-labelledby="manhole-tab" hidden>
+      <section class="input-panel">
+        <label for="manhole-dia">Select Manhole neck dia</label>
+        <select id="manhole-dia">
+          <option value="">Select Manhole neck dia</option>
+          <option value="500">500mm</option>
+          <option value="600">600mm</option>
+          <option value="750">750mm</option>
+          <option value="900">900mm</option>
+        </select>
+
+        <label for="construction-code">Select Tank Construction Code</label>
+        <select id="construction-code">
+          <option value="">Select Tank Construction Code</option>
+          <option value="is803">IS803/B&amp;R</option>
+          <option value="api650_old">API 650 (10th and earlier edition)</option>
+          <option value="api650_new">API 650 (11th and later editions)</option>
+          <option value="old_manual">Old Engg. Manual</option>
+        </select>
+
+        <label for="tank-height">Enter tank height (in m)</label>
+        <input id="tank-height" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 13.5">
+
+        <label for="cp-entered">Enter CP thickness (in mm)</label>
+        <input id="cp-entered" type="number" inputmode="decimal" min="0" step="any" placeholder="Enter measured CP thickness">
+
+        <label for="bf-entered">Enter BF thickness (in mm)</label>
+        <input id="bf-entered" type="number" inputmode="decimal" min="0" step="any" placeholder="Enter measured BF thickness">
+
+        <button id="manhole-reset" class="reset-button" type="button">RESET</button>
+      </section>
+
+      <section class="result-card manhole-result" aria-live="polite">
+        <div class="result-heading">MANHOLE CP AND BF ASSESSMENT</div>
+        <div class="result-row">
+          <span>Applicable Tank Height</span>
+          <strong id="applicable-height">—</strong>
+        </div>
+        <div class="rule"></div>
+        <div class="assessment-block">
+          <div class="assessment-title">COVER PLATE (CP)</div>
+          <div class="result-row"><span>Entered CP Thickness</span><strong id="cp-result-entered">—</strong></div>
+          <div class="result-row"><span>Required Minimum CP</span><strong id="cp-required">—</strong></div>
+          <div id="cp-status" class="assessment-status" role="status">Enter the details above to assess CP.</div>
+        </div>
+        <div class="rule"></div>
+        <div class="assessment-block">
+          <div class="assessment-title">BOLTING FLANGE (BF)</div>
+          <div class="result-row"><span>Entered BF Thickness</span><strong id="bf-result-entered">—</strong></div>
+          <div class="result-row"><span>Required Minimum BF</span><strong id="bf-required">—</strong></div>
+          <div id="bf-status" class="assessment-status" role="status">Enter the details above to assess BF.</div>
+        </div>
+        <p id="manhole-message" class="message">Select the manhole diameter and construction code, then enter tank height and measured thicknesses.</p>
+      </section>
     </section>
 
-    <section class="panel">
-      <div class="section-heading"><span class="section-number">02</span><div><h3>Shell course details</h3><p>Specify the number of courses and the height of each course</p></div></div>
-      <div class="course-toolbar">
-        <label class="field course-count"><span>Number of Shell Courses</span><select id="courseCount"></select></label>
-        <div class="course-summary" id="courseSummary">8 courses configured</div>
-      </div>
-      <div class="course-table-wrap">
-        <table class="course-input-table"><thead><tr><th>Shell course</th><th>Course height (m)</th></tr></thead><tbody id="courseRows"></tbody></table>
-      </div>
-      <div class="height-check" id="heightCheck" aria-live="polite"></div>
+
+    <section id="shell-panel" class="tab-panel shell-calculator" role="tabpanel" aria-labelledby="shell-tab" hidden>
+      <section class="shell-intro">
+        <div><p class="shell-eyebrow">TANK ASSESSMENT</p><h2>Tank particulars</h2>
+        <p class="shell-muted">Enter tank details and shell-course heights. Results update automatically.</p></div>
+        <button class="shell-reset-light" id="shell-reset" type="button">Reset inputs</button>
+      </section>
+
+      <section class="shell-panel">
+        <div class="shell-section-heading"><span class="shell-section-number">01</span><div><h3>General details</h3><p>Basic tank geometry and design parameters</p></div></div>
+        <div class="shell-input-grid">
+          <label class="shell-field"><span>Tank Diameter, D <small>(m)</small></span><input id="shell-diameter" type="number" min="0.01" step="0.01" value="32"></label>
+          <label class="shell-field"><span>Tank Height, H <small>(m)</small></span><input id="shell-tank-height" type="number" min="0.01" step="0.01" value="13"></label>
+          <label class="shell-field"><span>Radiography</span><select id="shell-radiography"><option value="0.7">No Radiography</option><option value="0.85" selected>Spot Radiography</option><option value="1">Full Radiography</option></select></label>
+          <label class="shell-field"><span>Joint Efficiency Factor, E</span><input id="shell-joint-efficiency" type="number" value="0.85" readonly></label>
+          <label class="shell-field"><span>Corrosion Allowance <small>(mm)</small></span><input id="shell-corrosion-allowance" type="number" min="0" step="0.1" value="1.5"></label>
+          <label class="shell-field"><span>Product Specific Gravity, G</span><input id="shell-specific-gravity" type="number" min="0.01" step="0.01" value="0.85"></label>
+        </div>
+        <p class="shell-field-note"><strong>Joint efficiency:</strong> assigned automatically from radiography selection (0.70 / 0.85 / 1.00).</p>
+      </section>
+
+      <section class="shell-panel">
+        <div class="shell-section-heading"><span class="shell-section-number">02</span><div><h3>Shell course details</h3><p>Specify the number of courses and the height of each course</p></div></div>
+        <div class="shell-course-toolbar">
+          <label class="shell-field shell-course-count"><span>Number of Shell Courses</span><select id="shell-course-count"></select></label>
+          <div class="shell-course-summary" id="shell-course-summary">8 courses configured</div>
+        </div>
+        <div class="shell-course-table-wrap"><table class="shell-course-input-table"><thead><tr><th>Shell course</th><th>Course height (m)</th></tr></thead><tbody id="shell-course-rows"></tbody></table></div>
+        <div class="shell-height-check" id="shell-height-check" aria-live="polite"></div>
+      </section>
+
+      <section class="shell-results-section">
+        <div class="shell-results-heading"><div><p class="shell-eyebrow">CALCULATION OUTPUT</p><h2>Calculated results</h2></div><span class="shell-live-indicator"><i></i> Live calculation</span></div>
+        <div class="shell-result-tabs" role="tablist" aria-label="Shell calculation result categories">
+          <button class="shell-result-tab active" type="button" data-shell-result="design" aria-selected="true">Design Thickness <small>(mm)</small></button>
+          <button class="shell-result-tab" type="button" data-shell-result="entire" aria-selected="false">Retiring Thickness – Entire Shell <small>(mm)</small></button>
+          <button class="shell-result-tab" type="button" data-shell-result="corroded" aria-selected="false">Retiring Thickness – Corroded Plate <small>(mm)</small></button>
+        </div>
+        <div class="shell-panel shell-result-panel" id="shell-result-panel" aria-live="polite"></div>
+      </section>
+
+      <section class="shell-panel shell-neck-panel">
+        <div class="shell-section-heading"><span class="shell-section-number">03</span><div><h3>Manhole Neck Thickness Assessment</h3><p>Compare measured neck thickness against the first-course and bolting-flange design requirements</p></div></div>
+        <div class="shell-input-grid">
+          <label class="shell-field"><span>Enter manhole neck thickness (in mm)</span><input id="neck-entered" type="number" min="0" step="any" placeholder="Enter measured neck thickness"></label>
+          <label class="shell-field"><span>Select manhole neck dia</span><select id="neck-dia"><option value="">Select diameter</option><option value="500">500mm</option><option value="600">600mm</option><option value="750">750mm</option><option value="900">900mm</option></select></label>
+          <label class="shell-field"><span>Select applicable standard</span><select id="neck-standard"><option value="">Select applicable standard</option><option value="is803">IS 803/B&amp;R</option><option value="api650_old">API 650 (10th and earlier edition)</option><option value="api650_new">API 650 (11th and later editions)</option></select></label>
+        </div>
+        <div class="shell-neck-results">
+          <div class="shell-neck-value"><span>Entered Manhole Neck Thickness</span><strong id="neck-entered-result">—</strong></div>
+          <div class="shell-neck-value"><span>1st Course Design Thickness</span><strong id="neck-first-course">—</strong></div>
+          <div class="shell-neck-value"><span>Bolting Flange Design Thickness</span><strong id="neck-bf-design">—</strong></div>
+        </div>
+        <div id="neck-status" class="shell-neck-status" role="status">Enter the required details to assess manhole neck thickness.</div>
+        <p id="neck-note" class="shell-muted shell-neck-note">The neck thickness assessment uses the selected construction standard and manhole neck diameter.</p>
+      </section>
     </section>
 
-    <section class="results-section">
-      <div class="results-heading"><div><p class="eyebrow">CALCULATION OUTPUT</p><h2>Calculated results</h2></div><span class="live-indicator"><i></i> Live calculation</span></div>
-      <div class="tabs" role="tablist" aria-label="Calculation result categories">
-        <button class="tab active" role="tab" aria-selected="true" data-tab="design">Design Thickness <small>(mm)</small></button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="entire">Retiring Thickness – Entire Shell <small>(mm)</small></button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="corroded">Retiring Thickness – Corroded Plate <small>(mm)</small></button>
-      </div>
-      <div class="panel result-panel" id="resultPanel" aria-live="polite"></div>
-      <div class="disclaimer"><strong>Important:</strong> This application is a digital implementation of the formulas and assumptions present in the supplied Excel workbook. Verify the applicable code editions, material properties, assumptions and results with the responsible tank inspection/design engineer before using them for an engineering decision.</div>
-    </section>
-    <footer>Tank Shell Thickness Calculator <span>•</span> Formula basis: supplied Excel workbook</footer>
+    <footer>
+      <div id="data-status">Loading schedule data…</div>
+      <div class="credit">Crafted by Manish Prakash, SM(M&amp;I), NR</div>
+    </footer>
   </main>
-  <script src="app.js"></script>
+  <script src="./app.js" defer></script>
 </body>
 </html>
